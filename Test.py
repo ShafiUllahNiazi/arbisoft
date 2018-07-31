@@ -11,10 +11,9 @@ def get_scrabble_score(valid_word):
     """
     Calculates the scrabble score of valid words and returns it.
     """
-
     scrabble_score = 0
     for character in valid_word:
-        scrabble_score = scrabble_score + CHARACTERS_SCORE[character]
+        scrabble_score += CHARACTERS_SCORE[character]
     return scrabble_score
 
 
@@ -23,7 +22,7 @@ def is_word_from_rack(word, rack):
     This function check the word that if it is made of the letters that are subset of rack letters.
     """
     rack = str(rack)
-    rack = str.lower(rack)
+    rack = rack.lower()
     for character in word:
         if character not in rack:
             return False
@@ -34,23 +33,24 @@ def is_word_from_rack(word, rack):
 
 def display_score(valid_words_list):
     """
-        This function takes the list of valid words and then get their score and dispalys final result.
-        """
-
-    valid_words_dictionary = {}
-    for word in valid_words_list:
-        scrabble_score = get_scrabble_score(word)
-        valid_words_dictionary[word] = scrabble_score
-    result_sorted_by_score = sorted(valid_words_dictionary.items(), key=lambda kv: kv[1], reverse=True)
-    for word, score in result_sorted_by_score:
-        print(str(score) + " " + word)
+    This function takes the list of valid words and then get their score and dispalys final result.
+    """
+    if valid_words_list != []:
+        valid_words_dictionary = {}
+        for word in valid_words_list:
+            scrabble_score_of_valid_word = get_scrabble_score(word)
+            valid_words_dictionary[word] = scrabble_score_of_valid_word
+        result_sorted_by_score = sorted(valid_words_dictionary.items(), key=lambda kv: kv[1], reverse=True)
+        for word, score in result_sorted_by_score:
+            print(str(score) + " " + word)
+    else:
+        print("No valid word is found")
 
 
 def find_valid_words(rack):
     """
     This function gives the valid words that are  made of the letters that are subset of rack letters.
     """
-
     file_path = "sowpods.txt"
     file = open(file_path, "r")
     valid_words_list = []
@@ -59,15 +59,16 @@ def find_valid_words(rack):
         word = str.lower(word)
         if is_word_from_rack(word, rack):
             valid_words_list.append(word)
-    # print(valid_words_list)
     display_score(valid_words_list)
 
 
-"""
+def main():
+    if len(sys.argv) == 2:
+        find_valid_words(sys.argv[1])
+    else:
+        print("please enter the command line argument")
+        exit()
 
-"""
-if sys.argv.__len__() == 2:  # condition for command line arguments
-    find_valid_words(sys.argv[1])
-else:
-    print("please enter the command line argument")
-    exit()
+
+if __name__ == '__main__':
+    main()
