@@ -56,7 +56,7 @@ def find_valid_words(rack):
     valid_words_list = []
     for word in file:
         word = word.strip('\n')
-        word = str.lower(word)
+        word = word.lower()
         if is_word_from_rack(word, rack):
             valid_words_list.append(word)
     display_score(valid_words_list)
