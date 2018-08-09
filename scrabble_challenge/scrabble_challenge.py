@@ -7,21 +7,20 @@ CHARACTERS_SCORE = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
                     "x": 8, "z": 10}
 
 
-def get_scrabble_score(valid_word):
+def get_word_score(valid_word):
     """
     Calculates the scrabble score of valid words and returns it.
     """
-    scrabble_score = 0
+    word_score = 0
     for character in valid_word:
-        scrabble_score += CHARACTERS_SCORE[character]
-    return scrabble_score
+        word_score += CHARACTERS_SCORE[character]
+    return word_score
 
 
 def is_word_from_rack(word, rack):
     """
     This function check the word that if it is made of the letters that are subset of rack letters.
     """
-    rack = str(rack)
     rack = rack.lower()
     for character in word:
         if character not in rack:
@@ -31,17 +30,17 @@ def is_word_from_rack(word, rack):
     return True
 
 
-def display_score(valid_words_list):
+def display_score(valid_words):
     """
     This function takes the list of valid words and then get their score and dispalys final result.
     """
-    if valid_words_list != []:
-        valid_words_dictionary = {}
-        for word in valid_words_list:
-            scrabble_score_of_valid_word = get_scrabble_score(word)
-            valid_words_dictionary[word] = scrabble_score_of_valid_word
-        result_sorted_by_score = sorted(valid_words_dictionary.items(), key=lambda kv: kv[1], reverse=True)
-        for word, score in result_sorted_by_score:
+    if valid_words != []:
+        valid_words_score = {}
+        for word in valid_words:
+            scrabble_score_of_valid_word = get_word_score(word)
+            valid_words_score[word] = scrabble_score_of_valid_word
+        sorted_result = sorted(valid_words_score.items(), key=lambda kv: kv[1], reverse=True)
+        for word, score in sorted_result:
             print(str(score) + " " + word)
     else:
         print("No valid word is found")
@@ -51,15 +50,16 @@ def find_valid_words(rack):
     """
     This function gives the valid words that are  made of the letters that are subset of rack letters.
     """
-    file_path = "sowpods.txt"
-    file = open(file_path, "r")
-    valid_words_list = []
-    for word in file:
-        word = word.strip('\n')
-        word = word.lower()
-        if is_word_from_rack(word, rack):
-            valid_words_list.append(word)
-    display_score(valid_words_list)
+    file = "sowpods.txt"
+    with open(file, "r") as file:
+
+        valid_words = []
+        for word in file:
+            word = word.strip('\n')
+            word = word.lower()
+            if is_word_from_rack(word, rack):
+                valid_words.append(word)
+    display_score(valid_words)
 
 
 def main():
