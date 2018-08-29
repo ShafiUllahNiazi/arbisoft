@@ -25,8 +25,8 @@ def is_word_from_rack(word, rack):
     for character in word:
         if character not in rack:
             return False
-        else:
-            rack = rack.replace(character, "", 1)
+
+        rack = rack.replace(character, "", 1)
     return True
 
 
@@ -34,13 +34,13 @@ def display_score(valid_words):
     """
     This function takes the list of valid words and then get their score and dispalys final result.
     """
-    if valid_words != []:
+    if valid_words:
         valid_words_score = {}
         for word in valid_words:
             scrabble_score_of_valid_word = get_word_score(word)
             valid_words_score[word] = scrabble_score_of_valid_word
-        sorted_result = sorted(valid_words_score.items(), key=lambda kv: kv[1], reverse=True)
-        for word, score in sorted_result:
+        sorted_words_score = sorted(valid_words_score.items(), key=lambda kv: kv[1], reverse=True)
+        for word, score in sorted_words_score:
             print(str(score) + " " + word)
     else:
         print("No valid word is found")
@@ -59,12 +59,13 @@ def find_valid_words(rack):
             word = word.lower()
             if is_word_from_rack(word, rack):
                 valid_words.append(word)
-    display_score(valid_words)
+    return valid_words
 
 
 def main():
     if len(sys.argv) == 2:
-        find_valid_words(sys.argv[1])
+        valid_words = find_valid_words(sys.argv[1])
+        display_score(valid_words)
     else:
         print("please enter the command line argument")
         exit()
